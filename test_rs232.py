@@ -1,17 +1,20 @@
 import serial
 
-s = serial.Serial('/dev/ttyUSB0',baudrate=115200)
-
+s = serial.Serial('/dev/ttyUSB1',baudrate=115200)
 
 hexCodes = {
-    "on":b"\x0d\x2a\x70\x6f\x77\x3d\x6f\x6e\x23\x0d",
-    "off":b"\x0d\x2a\x70\x6f\x77\x3d\x6f\x66\x66\x23\x0d",
+    "on":bytearray('\r*pow=on#\r','ascii'),
+    "off":bytearray('\r*pow=off#\r','ascii'),
    };
-
 
 def _send_command(k):
     if k in hexCodes:
-        for x in hexCodes[k]:
-            s.write(x)
+        s.write(hexCodes[k])
     else:
         print('comando non presente non implementato')
+
+def prj_on():
+    _send_command('on')
+
+def prj_off():
+    _send_command('off')
